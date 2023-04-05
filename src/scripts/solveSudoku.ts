@@ -2,21 +2,19 @@ import { isBoardValid } from "./checkBoard"
 import { createCompleteBoard } from "./createBoard"
 import { Board } from "../types"
 import { updateSuperPositions } from "./updateSuperPositions"
+import { shuffleArray } from "./shuffleArray"
 
 export function solveSudoku(board: Board) {
 	let boardBuffer: number[][] = []
 	let boardToUse = [...board]
+	//console.log("initial", boardToUse)
 	let iterations = 0
 
 	//Not using while to avoid infinite loops in case a unsolvable board is given
-	for (let i = 0; i < 4000; i++) {
-		//console.log(boardBuffer)
-		//#######console.log("beggining of loop", boardToUse)
-
+	for (let i = 0; i < 10000; i++) {
 		//find square to modify
 		let square = boardToUse.find(sq => sq.superPos)
 		if (!square) {
-			//#############console.log("no square with valid superPos found")
 			return boardToUse
 		}
 
@@ -28,11 +26,9 @@ export function solveSudoku(board: Board) {
 				square = sq
 			}
 		})
-		//##############console.log("beggining square", square)
 
 		//modify board and update superPos
 		if (square && square.superPos?.length === 1) {
-			//#######console.log("super pos is 1", square)
 			square = { ...square, value: square.superPos[0] }
 			boardToUse = boardToUse.map(sq => {
 				if (sq.id !== square?.id) return sq
@@ -42,7 +38,6 @@ export function solveSudoku(board: Board) {
 		}
 
 		if (square && square.superPos && square.superPos.length > 1) {
-			//#######console.log("super pos is NOT 1", square)
 			const possibleBoardsToChoose = square.superPos.map(sp =>
 				updateSuperPositions(
 					boardToUse.map(sq => {
@@ -51,31 +46,45 @@ export function solveSudoku(board: Board) {
 					})
 				)
 			)
+			shuffleArray(possibleBoardsToChoose)
 			boardToUse = possibleBoardsToChoose[0]
 			const restBoards = possibleBoardsToChoose.filter((b, i) => i !== 0)
 			restBoards.forEach(rb => boardBuffer.push(rb.map(sq => sq.value)))
 		}
 
-		if (!isBoardValid(boardToUse)) {
+		if (!isBoardValid(boardToUse) && square && square.superPos && square.superPos.length > 1) {
 			boardToUse = updateSuperPositions(createCompleteBoard(boardBuffer[0]))
 			boardBuffer.shift()
-			console.log("FUCKUP", boardToUse)
+			//console.log(iterations)
 			iterations++
 			continue
 		}
 
+		if (!isBoardValid(boardToUse) && square && square.superPos && square.superPos.length === 1) {
+			if (boardBuffer[0]) {
+				boardToUse = updateSuperPositions(createCompleteBoard(boardBuffer[0]))
+				boardBuffer.shift()
+				//console.log(iterations)
+				iterations++
+				continue
+			} else {
+				console.log("board has no solution, dude!!!!")
+				return undefined
+			}
+		}
+
 		const isSolved = isSolution(boardToUse)
 		if (isSolved) return boardToUse
-		console.log(iterations)
+		//console.log(iterations)
 		iterations++
 	}
 	return boardToUse
 }
 
-function isSolution(board: Board) {
+export function isSolution(board: Board) {
 	const isBoardNotComplete = board.some(sq => sq.value === 0)
-	if (!isBoardNotComplete) {
-		console.log("solution", board)
+	const isValid = isBoardValid(board)
+	if (!isBoardNotComplete && isValid) {
 		return true
 	}
 	return false

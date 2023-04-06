@@ -6,6 +6,11 @@ import { isSolution, solveSudoku } from "./scripts/solveSudoku"
 import { Square } from "./types"
 import { Home } from "./components/Home"
 
+//maybe do a show error function? if solution is wrong
+//maybe do a show/hide all superPositions button?
+//maybe do a sudoku rules/instructions?
+//DO a show/hide timer and highscores page in localstorage (for all 3 difficulties)
+
 function App() {
 	const [board, setBoard] = useState<Square[]>()
 	const [initialSquaresIds, setInitialSquareIds] = useState<number[]>()
@@ -29,7 +34,9 @@ function App() {
 		const { unsolvedBoard, solvedBoard } = generateSudoku(difficulty)
 		setBoard(unsolvedBoard)
 		setSolvedBoard(solvedBoard)
-		const initialSqs = unsolvedBoard.filter(sq => sq.value !== 0).map(sq => sq.id)
+		const initialSqs = unsolvedBoard
+			.filter(sq => sq.value !== 0)
+			.map(sq => sq.id)
 		setInitialSquareIds(initialSqs)
 	}
 
@@ -56,14 +63,29 @@ function App() {
 				/>
 			)}
 			{!playing && <Home getBoard={handleGetRandomBoard} />}
-			{playing && <div className='text-white absolute top-0 left-[100px] debug'>{isValid ? "TRUE" : "FALSE"}</div>}
-			{playing && <div className='text-green-500 absolute top-0 left-[200px] debug'>{solution ? "TRUE" : "FALSE"}</div>}
-			{playing && <Board board={board} handleInput={handleInput} initialSquares={initialSquaresIds} solve={solve} />}
+			{playing && (
+				<div className='text-white absolute top-0 left-[100px] debug'>
+					{isValid ? "TRUE" : "FALSE"}
+				</div>
+			)}
+			{playing && (
+				<div className='text-green-500 absolute top-0 left-[200px] debug'>
+					{solution ? "TRUE" : "FALSE"}
+				</div>
+			)}
+			{playing && (
+				<Board
+					board={board}
+					handleInput={handleInput}
+					initialSquares={initialSquaresIds}
+					solve={solve}
+				/>
+			)}
 		</div>
 	)
 }
 
-//put icon here and set boards to undefined and maybe popup modal to confirm go back
+//put icon here and set boards to undefined(to reset, more of a safeguard) and maybe popup modal to confirm go back
 function goBackButton() {}
 
 export default App

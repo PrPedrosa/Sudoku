@@ -2,7 +2,7 @@ import Square from "./Square"
 import { cx } from "../utils"
 import { Square as SquareType } from "../types"
 import { Board as BoardType } from "../types"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 //clicking outside of board unselectes square and/or unselected immeadiatly if value placed
 //rubber icon on delete input
@@ -46,7 +46,7 @@ export function Board({
 				{inputs.map(i => (
 					<div
 						className={cx(
-							"border border-black px-[8px] text-c-purple text-[20px] font-semibold rounded-[5px] bg-c-dark2 shadow-board",
+							"border border-black px-[8px] text-c-purple text-[20px] font-semibold rounded-[5px] bg-c-dark2 shadow-board select-none",
 							"active:!bg-c-purple active:!text-black",
 							{ "text-red-700": i === 0 }
 						)}

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Square as SquareType } from "../types"
 import { cx } from "../utils"
 
@@ -16,16 +16,25 @@ function Square({
 }) {
 	const [showSuperPosModal, setShowSuperPosModal] = useState(false)
 	const [superPosToShow, setSuperPosToShow] = useState<number[]>()
+	const [stopEvent, setStopEvent] = useState(false)
+	const [intervalId, setIntervalId] = useState<number>()
 
+	let timer = 0
 	const boardWidth = window.innerWidth - 10
 	const squareHeight = boardWidth > 780 ? undefined : boardWidth / 9
 
-	function handleShowSuperPos() {
+	/* useEffect(() => {
+		if (clickTimer < 300) return
+		console.log("helloo")
+		setShowSuperPosModal(true)
+	}, [timer]) */
+
+	const handleShowSuperPos = () => {
 		if (!sq.superPos || sq.value) return null
 		setShowSuperPosModal(true)
 	}
 
-	function handleSuperPosToShow(num: number) {
+	const handleSuperPosToShow = (num: number) => {
 		setSuperPosToShow(prev => {
 			if (!prev) return [num]
 			if (prev.includes(num)) return prev.filter(n => n !== num)
@@ -33,20 +42,42 @@ function Square({
 		})
 	}
 
+	const handleStartTimer = () => {
+		const intervalId = setInterval(() => {
+			if (timer > 300) {
+				setShowSuperPosModal(true)
+			}
+			timer += 10
+		}, 10)
+		setIntervalId(intervalId)
+	}
+
+	const handleStopTimer = () => {
+		if (!intervalId) return
+		setStopEvent(true)
+		clearInterval(intervalId)
+		setIntervalId(undefined)
+		setTimeout(() => setStopEvent(false), 100)
+	}
+
 	return (
 		<>
 			{showSuperPosModal && (
 				<SuperPosModal
 					square={sq}
-					hideModal={() => setShowSuperPosModal(false)}
+					hideModal={() => {
+						if (stopEvent) return
+						setShowSuperPosModal(false)
+					}}
 					handleSuperPosToShow={handleSuperPosToShow}
 					shownSuperPos={superPosToShow}
 				/>
 			)}
+
 			<div
 				key={sq.id}
 				className={cx(
-					"border-[2px] border-c-dark4 flex  cursor-pointer bg-c-dark2",
+					"border-[2px] border-c-dark4 flex  cursor-pointer bg-c-dark2 select-none",
 					{
 						"!border-r-black z-10": sq.id % 3 === 0,
 						"!border-l-black z-10": sq.id % 3 === 1,
@@ -60,6 +91,8 @@ function Square({
 				style={{ height: squareHeight }}
 				onClick={() => select(sq)}
 				onDoubleClickCapture={() => handleShowSuperPos()}
+				onTouchStart={() => handleStartTimer()}
+				onTouchEnd={() => handleStopTimer()}
 			>
 				<div
 					className={cx("text-c-purple font-semibold text-[20px]", {
@@ -142,7 +175,7 @@ function SuperPosModal({
 					{values.map(sp => (
 						<div
 							className={cx(
-								"border-2 border-c-dark1 bg-c-dark3 w-[35px] h-[35px] rounded-[5px] leading-[100%] flex items-center justify-center active:bg-c-purple",
+								"border-2 border-c-dark1 bg-c-dark3 w-[35px] h-[35px] rounded-[5px] leading-[100%] flex items-center justify-center active:bg-c-purple select-none",
 								{ "bg-c-purple": shownSuperPos?.includes(sp) }
 							)}
 							onClick={() => handleSuperPosToShow(sp)}

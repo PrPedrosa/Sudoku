@@ -16,6 +16,8 @@ function App() {
 	const [initialSquaresIds, setInitialSquareIds] = useState<number[]>()
 	const [solvedBoard, setSolvedBoard] = useState<Square[]>()
 	const [playing, setPlaying] = useState(false)
+	const [timer, setTimer] = useState<number>(0)
+	const [intervalId, setIntervalId] = useState<number>()
 	const [isValid, setIsValid] = useState(false)
 	const [solution, setSolution] = useState(false)
 	const [mode, setMode] = useState<"easy" | "medium" | "hard">()
@@ -38,6 +40,12 @@ function App() {
 			.filter(sq => sq.value !== 0)
 			.map(sq => sq.id)
 		setInitialSquareIds(initialSqs)
+
+		setIntervalId(
+			setInterval(() => {
+				setTimer(prev => prev + 1)
+			}, 1000)
+		)
 	}
 
 	function handleInput(squareId: number, value: number) {
@@ -52,6 +60,12 @@ function App() {
 	function solve() {
 		if (!board) return
 		setBoard(solvedBoard)
+	}
+
+	const stopTimer = () => {
+		clearInterval(intervalId)
+		setTimer(0)
+		setIntervalId(undefined)
 	}
 
 	return (
@@ -73,6 +87,15 @@ function App() {
 					{solution ? "TRUE" : "FALSE"}
 				</div>
 			)}
+			<div className='absolute top-0 left-[300px] text-white debug'>
+				{buildTimer(timer)}
+			</div>
+			<div
+				className='absolute top-0 left-[400px] text-white debug'
+				onClick={stopTimer}
+			>
+				stop
+			</div>
 			{playing && (
 				<Board
 					board={board}
@@ -87,5 +110,20 @@ function App() {
 
 //put icon here and set boards to undefined(to reset, more of a safeguard) and maybe popup modal to confirm go back
 function goBackButton() {}
+
+function buildTimer(secs: number) {
+	//do build secs cuz when secs > 60 and secs%60 < 10 appeards "060"
+	const seconds = secs % 60 < 10 ? `0${secs}` : secs % 60
+	//do a build minutes function because still need to account for when minutes > 60 ? "00"
+	const minutes =
+		secs >= 60
+			? Math.floor(secs / 60) < 10
+				? `0${Math.floor(secs / 60)}`
+				: Math.floor(secs / 60)
+			: "00"
+
+	const hours = secs >= 3600 ? "01" : "00"
+	return `${hours}:${minutes}:${seconds}`
+}
 
 export default App

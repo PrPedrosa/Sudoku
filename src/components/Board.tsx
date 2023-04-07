@@ -4,7 +4,6 @@ import { Square as SquareType } from "../types"
 import { Board as BoardType } from "../types"
 import { useState } from "react"
 
-//clicking outside of board unselectes square and/or unselected immeadiatly if value placed
 //rubber icon on delete input
 export function Board({
 	board,
@@ -36,12 +35,12 @@ export function Board({
 
 	return (
 		<div className='p-[5px] w-[100%] flex flex-col items-center justify-center gap-[15px] relative'>
-			<div
+			{/* <div
 				className='debug p-[2px] absolute top-[-50px] right-0'
 				onClick={solve}
 			>
 				solve
-			</div>
+			</div> */}
 			<div className='grid grid-cols-9 w-[100%] text-center gap-[5px]'>
 				{inputs.map(i => (
 					<div

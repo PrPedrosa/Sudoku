@@ -5,11 +5,15 @@ import { isBoardValid } from "./scripts/checkBoard"
 import { isSolution, solveSudoku } from "./scripts/solveSudoku"
 import { Square } from "./types"
 import { Home } from "./components/Home"
+import { updateSuperPositions } from "./scripts/updateSuperPositions"
+import { GoBackButton } from "./components/GoBackButton"
+import { Timer } from "./components/Timer"
 
 //maybe do a show error function? if solution is wrong
 //maybe do a show/hide all superPositions button?
 //maybe do a sudoku rules/instructions?
 //DO a show/hide timer and highscores page in localstorage (for all 3 difficulties)
+//DO a win animation, checking all squares and painting green if valid
 
 function App() {
 	const [board, setBoard] = useState<Square[]>()
@@ -18,6 +22,7 @@ function App() {
 	const [playing, setPlaying] = useState(false)
 	const [timer, setTimer] = useState<number>(0)
 	const [intervalId, setIntervalId] = useState<number>()
+	const [retry, setRetry] = useState(false)
 	const [isValid, setIsValid] = useState(false)
 	const [solution, setSolution] = useState(false)
 	const [mode, setMode] = useState<"easy" | "medium" | "hard">()
@@ -25,7 +30,6 @@ function App() {
 	useEffect(() => {
 		if (!board) return
 		setIsValid(isBoardValid(board))
-		setSolution(isSolution(board))
 	}, [board])
 
 	function handleGetRandomBoard(difficulty: "easy" | "medium" | "hard") {
@@ -36,6 +40,7 @@ function App() {
 		const { unsolvedBoard, solvedBoard } = generateSudoku(difficulty)
 		setBoard(unsolvedBoard)
 		setSolvedBoard(solvedBoard)
+
 		const initialSqs = unsolvedBoard
 			.filter(sq => sq.value !== 0)
 			.map(sq => sq.id)
@@ -54,7 +59,7 @@ function App() {
 			if (squareId === sq.id) return { ...sq, value: value }
 			return sq
 		})
-		setBoard(newBoard)
+		setBoard(updateSuperPositions(newBoard))
 	}
 
 	function solve() {
@@ -68,34 +73,61 @@ function App() {
 		setIntervalId(undefined)
 	}
 
+	//this works but wanna do pretty animation to check
+	/* function handleCheckSolution() {
+		if (!board) return
+		const newBoard: Square[] = board.map(sq => {
+			if (
+				!board.find(
+					squ =>
+						squ.value === sq.value &&
+						squ.id !== sq.id &&
+						(squ.rowId === sq.rowId ||
+							squ.colId === sq.colId ||
+							squ.boxId === sq.boxId)
+				)
+			) {
+				return { ...sq, valid: true }
+			} else return { ...sq, valid: false }
+		})
+
+		if (newBoard.find(sq => sq.valid === false)) {
+			setBoard(newBoard)
+			setRetry(true)
+			return
+		}
+		setRetry(false)
+		setSolution(true)
+	} */
+
+	function handleCheckSolution() {
+		if (!board) return
+		let squareIndex = 0
+
+		const intervalId2 = setInterval(() => {
+			if (squareIndex === 80) {
+				clearInterval(intervalId2)
+				return
+			}
+			setBoard(
+				board.map((sq, i) => (i === squareIndex ? { ...sq, valid: true } : sq))
+			)
+			squareIndex++
+		}, 200)
+	}
+
+	function handleGoBack() {
+		setPlaying(false)
+		setBoard(undefined)
+		setSolvedBoard(undefined)
+		stopTimer()
+	}
+
 	return (
 		<div className='h-[100vh] bg-c-dark1 flex w-[100%] items-center justify-center relative'>
-			{playing && (
-				<i
-					className='fa-solid fa-arrow-left absolute top-[10px] left-[10px] text-red-800 text-[20px] active:bg-red-800 border border-c-dark4 bg-c-dark3 p-[5px] rounded-[5px] shadow-button-back'
-					onClick={() => setTimeout(() => setPlaying(false), 150)}
-				/>
-			)}
+			<GoBackButton playing={playing} goBack={handleGoBack} />
 			{!playing && <Home getBoard={handleGetRandomBoard} />}
-			{playing && (
-				<div className='text-white absolute top-0 left-[100px] debug'>
-					{isValid ? "TRUE" : "FALSE"}
-				</div>
-			)}
-			{playing && (
-				<div className='text-green-500 absolute top-0 left-[200px] debug'>
-					{solution ? "TRUE" : "FALSE"}
-				</div>
-			)}
-			<div className='absolute top-0 left-[300px] text-white debug'>
-				{buildTimer(timer)}
-			</div>
-			<div
-				className='absolute top-0 left-[400px] text-white debug'
-				onClick={stopTimer}
-			>
-				stop
-			</div>
+			<Timer time={timer} playing={playing} />
 			{playing && (
 				<Board
 					board={board}
@@ -104,26 +136,17 @@ function App() {
 					solve={solve}
 				/>
 			)}
+
+			{playing && (
+				<div
+					className='absolute bottom-[10%] text-white'
+					onClick={handleCheckSolution}
+				>
+					Check solution
+				</div>
+			)}
 		</div>
 	)
-}
-
-//put icon here and set boards to undefined(to reset, more of a safeguard) and maybe popup modal to confirm go back
-function goBackButton() {}
-
-function buildTimer(secs: number) {
-	//do build secs cuz when secs > 60 and secs%60 < 10 appeards "060"
-	const seconds = secs % 60 < 10 ? `0${secs}` : secs % 60
-	//do a build minutes function because still need to account for when minutes > 60 ? "00"
-	const minutes =
-		secs >= 60
-			? Math.floor(secs / 60) < 10
-				? `0${Math.floor(secs / 60)}`
-				: Math.floor(secs / 60)
-			: "00"
-
-	const hours = secs >= 3600 ? "01" : "00"
-	return `${hours}:${minutes}:${seconds}`
 }
 
 export default App

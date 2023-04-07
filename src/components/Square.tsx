@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { Square as SquareType } from "../types"
 import { cx } from "../utils"
 
-//TODO => figure out mobile long touch
 function Square({
 	sq,
 	select,
@@ -22,12 +21,6 @@ function Square({
 	let timer = 0
 	const boardWidth = window.innerWidth - 10
 	const squareHeight = boardWidth > 780 ? undefined : boardWidth / 9
-
-	/* useEffect(() => {
-		if (clickTimer < 300) return
-		console.log("helloo")
-		setShowSuperPosModal(true)
-	}, [timer]) */
 
 	const handleShowSuperPos = () => {
 		if (!sq.superPos || sq.value) return null
@@ -85,7 +78,9 @@ function Square({
 						"!border-t-black z-10": borderTopBlackIds.includes(sq.id),
 						"!bg-c-purple": selected,
 						"h-[50px]": !squareHeight,
-						"items-center justify-center": sq.value !== 0
+						"items-center justify-center": sq.value !== 0,
+						"!bg-green-600 !text-black": sq.valid && sq.value,
+						"!bg-red-700": sq.valid === false && sq.value
 					}
 				)}
 				style={{ height: squareHeight }}
@@ -96,7 +91,7 @@ function Square({
 			>
 				<div
 					className={cx("text-c-purple font-semibold text-[20px]", {
-						"!text-[12px] grid grid-cols-3 h-min gap-[2px] pl-[2px] !text-red-700":
+						"!text-[14px] grid grid-cols-3 h-min gap-[2px] pl-[2px] !text-red-700":
 							sq.value === 0,
 						"!text-c-dark1": selected && !isInitial,
 						"text-white": isInitial

@@ -1,4 +1,5 @@
 import classNames from "classnames"
+import { Square } from "./types"
 
 export const cx = classNames
 export const validBoard = [

@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { cx } from "../utils"
 
 export function Home({
@@ -5,8 +6,10 @@ export function Home({
 }: {
 	getBoard: (difficulty: "easy" | "medium" | "hard") => void
 }) {
+	const [showInstructions, setShowInstructions] = useState(false)
+	const handleShowInstructions = () => setShowInstructions(!showInstructions)
 	return (
-		<div className='flex flex-col gap-[30px]'>
+		<div className='flex flex-col gap-[30px] items-center relative'>
 			<div className='text-[30px] text-c-purple text-center font-bold'>
 				SUDOKU
 			</div>
@@ -15,6 +18,27 @@ export function Home({
 				<DifficultyButton getBoard={getBoard} difficulty='medium' />
 				<DifficultyButton getBoard={getBoard} difficulty='hard' />
 			</div>
+			<div
+				className='text-center bg-c-dark3 text-white border border-black p-[5px] rounded-[5px] shadow-button-purple select-none active:bg-c-purple'
+				onClick={handleShowInstructions}
+			>
+				How to Play
+			</div>
+			{showInstructions && (
+				<div className='bg-c-dark2 text-white absolute bottom-[-160px] w-full p-[5px] border-c-purple border rounded-[5px]'>
+					<ul>
+						<li className='py-[5px] border-b border-c-purple'>
+							Press on a square to select it
+						</li>
+						<li className='py-[5px] leading-[120%] border-b border-c-purple'>
+							Press on a number to write that value on the selected square
+						</li>
+						<li className='py-[5px] leading-[120%]'>
+							Long Press a square to write small numbers on it
+						</li>
+					</ul>
+				</div>
+			)}
 		</div>
 	)
 }

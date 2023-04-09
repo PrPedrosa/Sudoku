@@ -8,6 +8,7 @@ import { Home } from "./components/Home"
 import { updateSuperPositions } from "./scripts/updateSuperPositions"
 import { GoBackButton } from "./components/GoBackButton"
 import { Timer } from "./components/Timer"
+import { CheckSolutionModal } from "./components/CheckSolutionModal"
 
 //maybe do a show error function? if solution is wrong
 //maybe do a show/hide all superPositions button?
@@ -74,7 +75,8 @@ function App() {
 	}
 
 	//this works but wanna do pretty animation to check
-	/* function handleCheckSolution() {
+	function handleCheckSolution() {
+		const oldBoard = board
 		if (!board) return
 		const newBoard: Square[] = board.map(sq => {
 			if (
@@ -94,40 +96,51 @@ function App() {
 		if (newBoard.find(sq => sq.valid === false)) {
 			setBoard(newBoard)
 			setRetry(true)
+			setTimeout(() => {
+				setBoard(oldBoard)
+				setRetry(false)
+			}, 1500)
 			return
 		}
+		setBoard(newBoard)
 		setRetry(false)
 		setSolution(true)
-	} */
+	}
 
-	function handleCheckSolution() {
+	/* function handleCheckSolution() {
 		if (!board) return
 		let squareIndex = 0
 
 		const intervalId2 = setInterval(() => {
-			if (squareIndex === 80) {
+			if (squareIndex === 30) {
 				clearInterval(intervalId2)
 				return
 			}
-			setBoard(
-				board.map((sq, i) => (i === squareIndex ? { ...sq, valid: true } : sq))
+			const newBoard = board.map((sq, i) =>
+				i === squareIndex ? { ...sq, valid: true } : sq
 			)
+			setBoard(newBoard)
 			squareIndex++
 		}, 200)
-	}
+	} */
 
 	function handleGoBack() {
 		setPlaying(false)
 		setBoard(undefined)
 		setSolvedBoard(undefined)
+		setSolution(false)
+		setRetry(false)
 		stopTimer()
 	}
+
+	const isBoardNotCompleted = () => board?.find(sq => sq.value === 0)
 
 	return (
 		<div className='h-[100vh] bg-c-dark1 flex w-[100%] items-center justify-center relative'>
 			<GoBackButton playing={playing} goBack={handleGoBack} />
 			{!playing && <Home getBoard={handleGetRandomBoard} />}
 			<Timer time={timer} playing={playing} />
+
 			{playing && (
 				<Board
 					board={board}
@@ -136,14 +149,14 @@ function App() {
 					solve={solve}
 				/>
 			)}
-
-			{playing && (
-				<div
-					className='absolute bottom-[10%] text-white'
-					onClick={handleCheckSolution}
-				>
-					Check solution
-				</div>
+			{playing && !isBoardNotCompleted() && (
+				<CheckSolutionModal
+					solution={solution}
+					retry={retry}
+					checkSolution={handleCheckSolution}
+					time={timer}
+					goBack={handleGoBack}
+				/>
 			)}
 		</div>
 	)

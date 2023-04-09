@@ -1,8 +1,10 @@
 export function Timer({ time, playing }: { time: number; playing: boolean }) {
 	if (!playing) return null
 	return (
-		<div className='absolute top-0 left-[200px] text-white debug'>
-			{buildClock(time)}
+		<div className='absolute top-[30px] left-0 text-white w-[100%] flex justify-center'>
+			<div className='border border-c-purple p-[5px] bg-c-dark2 rounded-[5px]'>
+				{buildClock(time)}
+			</div>
 		</div>
 	)
 }

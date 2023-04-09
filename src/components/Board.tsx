@@ -41,18 +41,18 @@ export function Board({
 			>
 				solve
 			</div> */}
-			<div className='grid grid-cols-9 w-[100%] text-center gap-[5px]'>
+			<div className='grid grid-cols-10 w-[100%] text-center gap-[5px]'>
 				{inputs.map(i => (
 					<div
 						className={cx(
-							"border border-black px-[8px] text-c-purple text-[20px] font-semibold rounded-[5px] bg-c-dark2 shadow-board select-none",
+							"border border-black px-[8px] text-c-purple text-[20px] font-semibold rounded-[5px] bg-c-dark2 shadow-board select-none text-center",
 							"active:!bg-c-purple active:!text-black",
 							{ "text-red-700": i === 0 }
 						)}
 						onClick={() => selectInput(i)}
 						key={i}
 					>
-						{i !== 0 ? i : "del"}
+						{i !== 0 ? i : "0"}
 					</div>
 				))}
 			</div>

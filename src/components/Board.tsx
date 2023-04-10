@@ -4,7 +4,6 @@ import { Square as SquareType } from "../types"
 import { Board as BoardType } from "../types"
 import { useState } from "react"
 
-//rubber icon on delete input
 export function Board({
 	board,
 	handleInput,
@@ -19,7 +18,6 @@ export function Board({
 	if (!board) return null
 
 	const [selectedSquare, setSelectedSquare] = useState<SquareType>()
-	//const [selectedInput, setSelectedInput] = useState<number>()
 	const inputs = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 	const selectSquare = (sq: SquareType) => {

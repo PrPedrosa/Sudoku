@@ -16,7 +16,7 @@ function Square({
 	const [showSuperPosModal, setShowSuperPosModal] = useState(false)
 	const [superPosToShow, setSuperPosToShow] = useState<number[]>()
 	const [stopEvent, setStopEvent] = useState(false)
-	const [intervalId, setIntervalId] = useState<number>()
+	const [intervalId, setIntervalId] = useState<NodeJS.Timer>()
 
 	let timer = 0
 	const boardWidth = window.innerWidth - 10

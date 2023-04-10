@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { cx } from "../utils"
+import InstallPWA from "./Install"
 
 export function Home({
 	getBoard
@@ -18,11 +19,19 @@ export function Home({
 				<DifficultyButton getBoard={getBoard} difficulty='medium' />
 				<DifficultyButton getBoard={getBoard} difficulty='hard' />
 			</div>
-			<div
-				className='text-center bg-c-dark3 text-white border border-black p-[5px] rounded-[5px] shadow-button-purple select-none active:bg-c-purple'
-				onClick={handleShowInstructions}
-			>
-				How to Play
+			<div className='flex w-full justify-around'>
+				<div className='text-center bg-c-dark3 text-white border border-black p-[5px] rounded-[5px] shadow-button-purple select-none active:bg-c-purple'>
+					HiScores
+				</div>
+				<div
+					className='text-center bg-c-dark3 text-white border border-black p-[5px] rounded-[5px] shadow-button-purple select-none active:bg-c-purple'
+					onClick={handleShowInstructions}
+				>
+					How to Play
+				</div>
+			</div>
+			<div>
+				<InstallPWA />
 			</div>
 			{showInstructions && (
 				<div className='bg-c-dark2 text-white absolute bottom-[-160px] w-full p-[5px] border-c-purple border rounded-[5px]'>

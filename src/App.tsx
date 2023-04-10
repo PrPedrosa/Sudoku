@@ -10,19 +10,14 @@ import { GoBackButton } from "./components/GoBackButton"
 import { Timer } from "./components/Timer"
 import { CheckSolutionModal } from "./components/CheckSolutionModal"
 
-//maybe do a show error function? if solution is wrong
-//maybe do a show/hide all superPositions button?
-//maybe do a sudoku rules/instructions?
 //DO a show/hide timer and highscores page in localstorage (for all 3 difficulties)
-//DO a win animation, checking all squares and painting green if valid
-
 function App() {
 	const [board, setBoard] = useState<Square[]>()
 	const [initialSquaresIds, setInitialSquareIds] = useState<number[]>()
 	const [solvedBoard, setSolvedBoard] = useState<Square[]>()
 	const [playing, setPlaying] = useState(false)
 	const [timer, setTimer] = useState<number>(0)
-	const [intervalId, setIntervalId] = useState<number>()
+	const [intervalId, setIntervalId] = useState<NodeJS.Timer>()
 	const [retry, setRetry] = useState(false)
 	const [isValid, setIsValid] = useState(false)
 	const [solution, setSolution] = useState(false)
@@ -47,11 +42,10 @@ function App() {
 			.map(sq => sq.id)
 		setInitialSquareIds(initialSqs)
 
-		setIntervalId(
-			setInterval(() => {
-				setTimer(prev => prev + 1)
-			}, 1000)
-		)
+		const intId = setInterval(() => {
+			setTimer(prev => prev + 1)
+		}, 1000)
+		setIntervalId(intId)
 	}
 
 	function handleInput(squareId: number, value: number) {
@@ -74,7 +68,6 @@ function App() {
 		setIntervalId(undefined)
 	}
 
-	//this works but wanna do pretty animation to check
 	function handleCheckSolution() {
 		const oldBoard = board
 		if (!board) return
@@ -106,23 +99,6 @@ function App() {
 		setRetry(false)
 		setSolution(true)
 	}
-
-	/* function handleCheckSolution() {
-		if (!board) return
-		let squareIndex = 0
-
-		const intervalId2 = setInterval(() => {
-			if (squareIndex === 30) {
-				clearInterval(intervalId2)
-				return
-			}
-			const newBoard = board.map((sq, i) =>
-				i === squareIndex ? { ...sq, valid: true } : sq
-			)
-			setBoard(newBoard)
-			squareIndex++
-		}, 200)
-	} */
 
 	function handleGoBack() {
 		setPlaying(false)

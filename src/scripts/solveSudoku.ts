@@ -7,7 +7,6 @@ import { shuffleArray } from "./shuffleArray"
 export function solveSudoku(board: Board) {
 	let boardBuffer: number[][] = []
 	let boardToUse = [...board]
-	//console.log("initial", boardToUse)
 	let iterations = 0
 
 	//Not using while to avoid infinite loops in case a unsolvable board is given
@@ -22,7 +21,10 @@ export function solveSudoku(board: Board) {
 		boardToUse.forEach(sq => {
 			if (!square?.superPos) return
 			if (!sq.superPos) return
-			if (sq.superPos.length < square.superPos.length && sq.superPos.length !== 0) {
+			if (
+				sq.superPos.length < square.superPos.length &&
+				sq.superPos.length !== 0
+			) {
 				square = sq
 			}
 		})
@@ -52,7 +54,12 @@ export function solveSudoku(board: Board) {
 			restBoards.forEach(rb => boardBuffer.push(rb.map(sq => sq.value)))
 		}
 
-		if (!isBoardValid(boardToUse) && square && square.superPos && square.superPos.length > 1) {
+		if (
+			!isBoardValid(boardToUse) &&
+			square &&
+			square.superPos &&
+			square.superPos.length > 1
+		) {
 			boardToUse = updateSuperPositions(createCompleteBoard(boardBuffer[0]))
 			boardBuffer.shift()
 			//console.log(iterations)
@@ -60,7 +67,12 @@ export function solveSudoku(board: Board) {
 			continue
 		}
 
-		if (!isBoardValid(boardToUse) && square && square.superPos && square.superPos.length === 1) {
+		if (
+			!isBoardValid(boardToUse) &&
+			square &&
+			square.superPos &&
+			square.superPos.length === 1
+		) {
 			if (boardBuffer[0]) {
 				boardToUse = updateSuperPositions(createCompleteBoard(boardBuffer[0]))
 				boardBuffer.shift()

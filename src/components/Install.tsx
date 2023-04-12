@@ -12,7 +12,6 @@ const InstallPWA = () => {
 			setPromptInstall(e)
 		}
 		window.addEventListener("beforeinstallprompt", handler)
-
 		return () => window.removeEventListener("transitionend", handler)
 	}, [])
 
@@ -23,9 +22,9 @@ const InstallPWA = () => {
 		}
 		promptInstall.prompt()
 	}
-	/* if (!supportsPWA) {
+	if (!supportsPWA) {
 		return null
-	} */
+	}
 	return (
 		<button
 			className='text-white'

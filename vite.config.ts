@@ -18,7 +18,8 @@ export default defineConfig({
 				name: "Sudoku Game",
 				short_name: "Sudoku",
 				description: "Simple Sudoku Game",
-				theme_color: "#000000",
+				theme_color: "#1e2124",
+				background_color: "#1e2124",
 				orientation:"portrait",
 				icons: [
 					{

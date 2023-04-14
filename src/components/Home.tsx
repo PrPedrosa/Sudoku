@@ -48,9 +48,8 @@ function HiScores({
   showOrHide: () => void
   show: boolean
 }) {
-  const [scores, setScores] = useState<string[] | undefined>(localStorage.getItem("easy-scores")?.split(","))
+  const [scores, setScores] = useState<string[]>()
   const [mode, setMode] = useState<string>("easy")
-
   useEffect(() => {
     setScores(localStorage.getItem(`${mode}-scores`)?.split(","))
   }, [mode])
@@ -59,7 +58,10 @@ function HiScores({
     <>
       <div
         className="text-center bg-c-dark3 text-white border border-black p-[5px] rounded-[5px] shadow-button-purple select-none active:bg-c-purple cursor-pointer active:shadow-none transition duration-300 ease-in-out"
-        onClick={showOrHide}
+        onClick={() => {
+          showOrHide()
+          setScores(localStorage.getItem(`${mode}-scores`)?.split(","))
+        }}
       >
         HiScores
       </div>
@@ -81,12 +83,15 @@ function HiScores({
               </div>
               <div
                 onClick={() => setMode("medium")}
-                className={cx("p-[5px] text-orange-700 font-semibold select-none", {
-                  "bg-c-dark2 border border-c-purple border-t-0":
-                    mode !== "medium",
-                  "bg-c-dark4 border-r border-l border-c-purple":
-                    mode === "medium",
-                })}
+                className={cx(
+                  "p-[5px] text-orange-700 font-semibold select-none",
+                  {
+                    "bg-c-dark2 border border-c-purple border-t-0":
+                      mode !== "medium",
+                    "bg-c-dark4 border-r border-l border-c-purple":
+                      mode === "medium",
+                  }
+                )}
               >
                 Medium
               </div>

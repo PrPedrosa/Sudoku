@@ -28,7 +28,7 @@ const InstallPWA = () => {
   }
   return (
     <button
-      className="flex items-center gap-[5px] fixed top-[20px] left-[20px] text-[14px] bg-[#f8f8f8] border border-c-purple text-c-purple rounded-[5px] p-[2px]"
+      className="flex items-center gap-[5px] fixed top-[20px] left-[20px] text-[14px] bg-[#f8f8f8] border border-c-purple text-c-purple rounded-[5px] p-[2px] z-40"
       aria-label="Install app"
       title="Install app"
       onClick={onClick}

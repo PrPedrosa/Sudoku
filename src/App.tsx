@@ -24,9 +24,12 @@ function App() {
   const [mode, setMode] = useState<"easy" | "medium" | "hard">()
 
   useEffect(() => {
-    if (!localStorage.getItem("easy-scores")) localStorage.setItem("easy-scores", "0,0,0")
-    if (!localStorage.getItem("medium-scores")) localStorage.setItem("medium-scores", "0,0,0")
-    if (!localStorage.getItem("hard-scores")) localStorage.setItem("hard-scores", "0,0,0")
+    if (!localStorage.getItem("easy-scores"))
+      localStorage.setItem("easy-scores", "0,0,0")
+    if (!localStorage.getItem("medium-scores"))
+      localStorage.setItem("medium-scores", "0,0,0")
+    if (!localStorage.getItem("hard-scores"))
+      localStorage.setItem("hard-scores", "0,0,0")
   }, [])
 
   function handleGetRandomBoard(difficulty: "easy" | "medium" | "hard") {
@@ -70,7 +73,7 @@ function App() {
     setIntervalId(undefined)
   }
 
-  function handleCheckSolution(time:number) {
+  function handleCheckSolution(time: number) {
     const oldBoard = board
     if (!board) return
     const newBoard: Square[] = board.map((sq) => {
@@ -109,7 +112,7 @@ function App() {
     setSolvedBoard(undefined)
     setSolution(false)
     setRetry(false)
-	setSolverMode(false)
+    setSolverMode(false)
     stopTimer()
   }
 
@@ -117,12 +120,18 @@ function App() {
 
   return (
     <div className="h-[100vh] bg-c-dark1 flex w-[100%] items-center justify-center relative">
-      <GoBackButton playing={playing} solverMode={solverMode} goBack={handleGoBack} />
+      <GoBackButton
+        playing={playing}
+        solverMode={solverMode}
+        goBack={handleGoBack}
+      />
       <Timer time={timer} playing={playing} />
-	  {!playing && !solverMode && <SolverModeButton setSolverMode={setSolverMode}/>}
-	  {!playing && solverMode && <SudokuSolver/>}
-      {!playing && !solverMode && <Home getBoard={handleGetRandomBoard} />}
 
+      {!playing && !solverMode && (
+        <SolverModeButton setSolverMode={setSolverMode} />
+      )}
+      {!playing && solverMode && <SudokuSolver />}
+      {!playing && !solverMode && <Home getBoard={handleGetRandomBoard} />}
 
       {playing && (
         <Board
@@ -131,6 +140,7 @@ function App() {
           initialSquares={initialSquaresIds}
         />
       )}
+
       {playing && !isBoardNotCompleted() && (
         <CheckSolutionModal
           solution={solution}

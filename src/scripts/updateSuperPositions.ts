@@ -2,6 +2,7 @@ import { Board } from "../types"
 
 export function updateSuperPositions(board: Board): Board {
 	const newBoard: Board = []
+
 	for (let i = 0; i < board.length; i++) {
 		if (board[i].value !== 0) {
 			newBoard.push({ ...board[i], superPos: null })

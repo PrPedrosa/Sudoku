@@ -25,7 +25,7 @@ export function Home({
       <div className="text-[30px] text-c-purple text-center font-bold">
         SUDOKU
       </div>
-      <div className="flex gap-[10px]">
+      <div className="flex gap-[10px] items-center">
         <DifficultyButton getBoard={getBoard} difficulty="easy" />
         <DifficultyButton getBoard={getBoard} difficulty="medium" />
         <DifficultyButton getBoard={getBoard} difficulty="hard" />
@@ -51,7 +51,6 @@ function HiScores({
   const [scores, setScores] = useState<string[]>()
   const [mode, setMode] = useState<string>("easy")
 
-  //FIX => get all scores in state as to not constantly call effects and acess storage
   useEffect(() => {
     setScores(localStorage.getItem(`${mode}-scores`)?.split(","))
   }, [mode])
@@ -59,7 +58,7 @@ function HiScores({
   return (
     <>
       <div
-        className="text-center bg-c-dark3 text-white border border-black p-[5px] rounded-[5px] shadow-button-purple select-none active:bg-c-purple cursor-pointer"
+        className="text-center bg-c-dark3 text-white border border-black p-[5px] rounded-[5px] shadow-button-purple select-none active:bg-c-purple cursor-pointer active:shadow-none transition duration-300 ease-in-out"
         onClick={showOrHide}
       >
         HiScores
@@ -143,7 +142,7 @@ function HowToPlay({
   return (
     <>
       <div
-        className="text-center bg-c-dark3 text-white border border-black p-[5px] rounded-[5px] shadow-button-purple select-none active:bg-c-purple cursor-pointer"
+        className="text-center bg-c-dark3 text-white border border-black p-[5px] rounded-[5px] shadow-button-purple select-none active:bg-c-purple cursor-pointer active:shadow-none transition duration-300 ease-in-out"
         onClick={showOrHide}
       >
         How to Play
@@ -178,7 +177,7 @@ function DifficultyButton({
   return (
     <div
       className={cx(
-        "cursor-pointer border border-black bg-c-purple text-center text-white p-[10px] rounded-[10px] min-w-[80px] font-semibold uppercase text-[14px] select-none",
+        "cursor-pointer border border-black bg-c-purple text-center text-white p-[10px] rounded-[10px] min-w-[80px] font-semibold uppercase text-[14px] select-none active:shadow-none transition duration-500 ease-in-out",
         {
           "hover:bg-green-700 active:bg-green-700 shadow-button-easy":
             difficulty === "easy",

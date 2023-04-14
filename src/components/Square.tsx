@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Square as SquareType } from "../types"
 import { cx } from "../utils"
 
@@ -18,9 +18,9 @@ function Square({
 	const [stopEvent, setStopEvent] = useState(false)
 	const [intervalId, setIntervalId] = useState<NodeJS.Timer>()
 
-	let timer = 0
+	let longPressTimer = 0
 	const boardWidth = window.innerWidth - 10
-	const squareHeight = boardWidth > 780 ? undefined : boardWidth / 9
+	const squareHeight = boardWidth > 450 ? undefined : boardWidth / 9
 
 	const handleShowSuperPos = () => {
 		if (!sq.superPos || sq.value) return null
@@ -37,10 +37,10 @@ function Square({
 
 	const handleStartTimer = () => {
 		const intervalId = setInterval(() => {
-			if (timer > 300) {
+			if (longPressTimer > 300) {
 				setShowSuperPosModal(true)
 			}
-			timer += 10
+			longPressTimer += 10
 		}, 10)
 		setIntervalId(intervalId)
 	}
@@ -90,7 +90,7 @@ function Square({
 				onTouchEnd={() => handleStopTimer()}
 			>
 				<div
-					className={cx("text-c-purple font-semibold text-[20px]", {
+					className={cx("text-c-purple font-semibold text-[24px]", {
 						"!text-[14px] grid grid-cols-3 h-min gap-[2px] pl-[2px] !text-red-700":
 							sq.value === 0,
 						"!text-c-dark1": selected && !isInitial,

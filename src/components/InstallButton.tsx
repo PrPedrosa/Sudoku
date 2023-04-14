@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import downloadIcon from "../svg/download.svg"
 
 const InstallPWA = () => {
 	const [supportsPWA, setSupportsPWA] = useState(false)
@@ -32,7 +33,7 @@ const InstallPWA = () => {
 			title='Install app'
 			onClick={onClick}
 		>
-			<i className="fa-solid fa-download text-c-purple"/>
+			<img src={downloadIcon} alt="download" width={20} height={20} className="p-[3px]"/>
 			<div>Download!</div>
 		</button>
 	)

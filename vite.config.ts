@@ -19,6 +19,7 @@ export default defineConfig({
 				short_name: "Sudoku",
 				description: "Simple Sudoku Game",
 				theme_color: "#000000",
+				orientation:"portrait",
 				icons: [
 					{
 						src: "/assets/manifest-icon-192.maskable.png",

@@ -7,6 +7,9 @@ import { updateSuperPositions } from "./scripts/updateSuperPositions"
 import { GoBackButton } from "./components/GoBackButton"
 import { Timer } from "./components/Timer"
 import { CheckSolutionModal } from "./components/CheckSolutionModal"
+import { SudokuSolver } from "./components/SudokuSolver"
+import { SolverModeButton } from "./components/SolverModeButton"
+import { handleHiScoreStorage } from "./scripts/handleHiScoreStorage"
 
 function App() {
   const [board, setBoard] = useState<Square[]>()
@@ -17,6 +20,7 @@ function App() {
   const [intervalId, setIntervalId] = useState<NodeJS.Timer>()
   const [retry, setRetry] = useState(false)
   const [solution, setSolution] = useState(false)
+  const [solverMode, setSolverMode] = useState(false)
   const [mode, setMode] = useState<"easy" | "medium" | "hard">()
 
   useEffect(() => {
@@ -54,10 +58,11 @@ function App() {
     setBoard(updateSuperPositions(newBoard))
   }
 
-  function solve() {
+  //Use in dev env only, pass solve func to Board solve prop
+  /* function solve() {
     if (!board) return
     setBoard(solvedBoard)
-  }
+  } */
 
   const stopTimer = () => {
     clearInterval(intervalId)
@@ -104,6 +109,7 @@ function App() {
     setSolvedBoard(undefined)
     setSolution(false)
     setRetry(false)
+	setSolverMode(false)
     stopTimer()
   }
 
@@ -111,16 +117,18 @@ function App() {
 
   return (
     <div className="h-[100vh] bg-c-dark1 flex w-[100%] items-center justify-center relative">
-      <GoBackButton playing={playing} goBack={handleGoBack} />
+      <GoBackButton playing={playing} solverMode={solverMode} goBack={handleGoBack} />
       <Timer time={timer} playing={playing} />
-      {!playing && <Home getBoard={handleGetRandomBoard} />}
+	  {!playing && !solverMode && <SolverModeButton setSolverMode={setSolverMode}/>}
+	  {!playing && solverMode && <SudokuSolver/>}
+      {!playing && !solverMode && <Home getBoard={handleGetRandomBoard} />}
+
 
       {playing && (
         <Board
           board={board}
           handleInput={handleInput}
           initialSquares={initialSquaresIds}
-          solve={solve}
         />
       )}
       {playing && !isBoardNotCompleted() && (
@@ -134,34 +142,6 @@ function App() {
       )}
     </div>
   )
-}
-
-/**
- * handles hiScores storage
- *
- * if no hiScores are set, localStorage default is 0,0,0
- */
-function handleHiScoreStorage(time: number, mode?: string) {
-  if (!mode) {
-    alert("Unable to fetch HiScore data")
-    return
-  }
-  const hiScores = localStorage
-    .getItem(`${mode}-scores`)
-    ?.split(",")
-    .map((hs) => +hs)
-  if (!hiScores) {
-    alert("Unable to fetch HiScore data")
-    return
-  }
-  const newHiScores = [...hiScores, time]
-    .filter((hs) => hs !== 0)
-    .sort((a, b) => a - b)
-  while (newHiScores.length !== 3) {
-    if (newHiScores.length < 3) newHiScores.push(0)
-    if (newHiScores.length > 3) newHiScores.pop()
-  }
-  localStorage.setItem(`${mode}-scores`, newHiScores.join())
 }
 
 export default App

@@ -13,7 +13,7 @@ export function Board({
 	board?: BoardType
 	handleInput: (squareId: number, value: number) => void
 	initialSquares?: number[]
-	solve: () => void
+	solve?: () => void
 }) {
 	if (!board) return null
 
@@ -33,12 +33,12 @@ export function Board({
 
 	return (
 		<div className='p-[5px] w-[100%] flex flex-col items-center justify-center gap-[15px] relative'>
-			<div
-				className='debug p-[2px] absolute top-[-50px] right-0'
+			{solve && <div
+				className='text-white p-[4px] absolute top-[-50px] right-[50%] translate-x-[50%] bg-c-dark2 border border-c-purple rounded-[5px] shadow-button-purple active:bg-c-purple cursor-pointer'
 				onClick={solve}
 			>
-				solve
-			</div>
+				Solve!
+			</div>}
 			<div className='grid grid-cols-10 w-[100%] text-center gap-[5px] sm:w-[450px]'>
 				{inputs.map(i => (
 					<div

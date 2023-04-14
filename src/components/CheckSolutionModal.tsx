@@ -57,7 +57,7 @@ export function CheckSolutionModal({
   /* button */
   return (
     <div
-      className="absolute text-white z-[100] bottom-[50px] border border-c-purple p-[5px] rounded-[10px] bg-c-dark2 active:bg-c-purple"
+      className="absolute text-white z-[100] bottom-[50px] border border-c-purple p-[5px] rounded-[10px] bg-c-dark2 active:bg-c-purple cursor-pointer"
       onClick={() =>
         setTimeout(() => {
           checkSolution(time)

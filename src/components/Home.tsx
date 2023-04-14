@@ -48,7 +48,7 @@ function HiScores({
   showOrHide: () => void
   show: boolean
 }) {
-  const [scores, setScores] = useState<string[]>()
+  const [scores, setScores] = useState<string[] | undefined>(localStorage.getItem("easy-scores")?.split(","))
   const [mode, setMode] = useState<string>("easy")
 
   useEffect(() => {

@@ -70,7 +70,7 @@ function HiScores({
               <div
                 onClick={() => setMode("easy")}
                 className={cx(
-                  "rounded-tl-[5px] p-[5px] text-green-700 font-semibold",
+                  "rounded-tl-[5px] p-[5px] text-green-700 font-semibold select-none",
                   {
                     "bg-c-dark2 border-b border-c-purple": mode !== "easy",
                     "bg-c-dark4": mode === "easy",
@@ -81,7 +81,7 @@ function HiScores({
               </div>
               <div
                 onClick={() => setMode("medium")}
-                className={cx("p-[5px] text-orange-700 font-semibold", {
+                className={cx("p-[5px] text-orange-700 font-semibold select-none", {
                   "bg-c-dark2 border border-c-purple border-t-0":
                     mode !== "medium",
                   "bg-c-dark4 border-r border-l border-c-purple":
@@ -93,7 +93,7 @@ function HiScores({
               <div
                 onClick={() => setMode("hard")}
                 className={cx(
-                  "rounded-tr-[5px] p-[5px] text-red-700 font-semibold",
+                  "rounded-tr-[5px] p-[5px] text-red-700 font-semibold select-none",
                   {
                     "bg-c-dark2 border-b border-c-purple": mode !== "hard",
                     "bg-c-dark4": mode === "hard",

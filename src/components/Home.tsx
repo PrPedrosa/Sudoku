@@ -160,7 +160,7 @@ function HowToPlay({
             <div className="grid grid-cols-2 text-center">
               <div
                 className={cx(
-                  "rounded-tl-[5px] p-[5px] font-medium text-[18px] text-c-purple",
+                  "rounded-tl-[5px] p-[5px] font-medium text-[18px] text-c-purple cursor-pointer select-none",
                   {
                     "bg-c-dark3 border-r border-c-purple": device === "desktop",
                   },
@@ -168,11 +168,11 @@ function HowToPlay({
                 )}
                 onClick={() => setDevice("desktop")}
               >
-                Desktop
+                PC
               </div>
               <div
                 className={cx(
-                  "rounded-tr-[5px] p-[5px] font-medium text-[18px] text-c-purple",
+                  "rounded-tr-[5px] p-[5px] font-medium text-[18px] text-c-purple cursor-pointer select-none",
                   {
                     "bg-c-dark3 border-l border-c-purple": device === "mobile",
                   },

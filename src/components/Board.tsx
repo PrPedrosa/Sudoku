@@ -33,19 +33,19 @@ export function Board({
 
 	return (
 		<div className='p-[5px] w-[100%] flex flex-col items-center justify-center gap-[15px] relative'>
-			{/* <div
+			<div
 				className='debug p-[2px] absolute top-[-50px] right-0'
 				onClick={solve}
 			>
 				solve
-			</div> */}
-			<div className='grid grid-cols-10 w-[100%] text-center gap-[5px]'>
+			</div>
+			<div className='grid grid-cols-10 w-[100%] text-center gap-[5px] sm:w-[450px]'>
 				{inputs.map(i => (
 					<div
 						className={cx(
-							"border border-black px-[8px] text-c-purple text-[20px] font-semibold rounded-[5px] bg-c-dark2 shadow-board select-none text-center",
-							"active:!bg-c-purple active:!text-black",
-							{ "text-red-700": i === 0 }
+							"border border-black px-[8px] text-c-purple text-[20px] font-semibold rounded-[5px] bg-c-dark2 shadow-button-purple select-none text-center cursor-pointer",
+							"active:bg-c-purple active:text-black",
+							{ "text-red-700": i === 0, "active:bg-red-700": i === 0 }
 						)}
 						onClick={() => selectInput(i)}
 						key={i}

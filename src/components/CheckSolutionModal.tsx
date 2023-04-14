@@ -10,7 +10,7 @@ export function CheckSolutionModal({
 }: {
 	solution: boolean
 	retry: boolean
-	checkSolution: () => void
+	checkSolution: (time:number) => void
 	time: number
 	goBack: () => void
 }) {
@@ -53,12 +53,14 @@ export function CheckSolutionModal({
 			</div>
 		)
 	}
+	
+	/* button */
 	return (
 		<div
 			className='absolute text-white z-[100] bottom-[50px] border border-c-purple p-[5px] rounded-[10px] bg-c-dark2 active:bg-c-purple'
 			onClick={() =>
 				setTimeout(() => {
-					checkSolution()
+					checkSolution(time)
 				}, 100)
 			}
 		>

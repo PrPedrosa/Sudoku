@@ -11,14 +11,14 @@ export default defineConfig({
 			workbox: {
 				globPatterns: ["**/*.{js,css,html,ico,png,svg}"]
 			},
-			devOptions: { enabled: true },
+			/* devOptions: { enabled: true }, */
 			includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
 			strategies: "generateSW",
 			manifest: {
 				name: "Sudoku Game",
 				short_name: "Sudoku",
 				description: "Simple Sudoku Game",
-				theme_color: "#ffffff",
+				theme_color: "#000000",
 				icons: [
 					{
 						src: "/assets/manifest-icon-192.maskable.png",

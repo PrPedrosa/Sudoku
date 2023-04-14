@@ -27,13 +27,13 @@ const InstallPWA = () => {
 	}
 	return (
 		<button
-			className='text-white'
-			id='setup_button'
+			className='flex items-center gap-[5px] fixed top-[20px] left-[20px] text-[14px] bg-[#f8f8f8] border border-c-purple text-c-purple rounded-[5px] p-[2px]'
 			aria-label='Install app'
 			title='Install app'
 			onClick={onClick}
 		>
-			Install
+			<i className="fa-solid fa-download text-c-purple"/>
+			<div>Download!</div>
 		</button>
 	)
 }

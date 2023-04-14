@@ -49,9 +49,7 @@ const makeBoxId = (rowId: number, colId: number) => {
 }
 
 export function generateSudoku(difficulty: "easy" | "medium" | "hard"): { unsolvedBoard: Board; solvedBoard: Board } {
-	//why 47 is minimun to run kinda safely??? (if we do the solve sudoku with numofvalues included in the forLoop)
-	const numOfZeros = difficulty === "easy" ? 45 : difficulty === "medium" ? 50 : 55
-	//let numOfValues = 81 - numOfZeros
+	const numOfZeros = difficulty === "easy" ? 40 : difficulty === "medium" ? 45 : 50
 	const randIdxStart = Math.floor(Math.random() * 81)
 
 	let board = createCompleteBoard()
@@ -65,20 +63,6 @@ export function generateSudoku(difficulty: "easy" | "medium" | "hard"): { unsolv
 	}
 	board = updateSuperPositions(board)
 
-	/* for (let i = 0; i < numOfValues - 1; i++) {
-		let randIdx = Math.floor(Math.random() * 81)
-		let square = board[randIdx]
-		if (square.value !== 0) {
-			numOfValues++
-			continue
-		}
-
-		board[randIdx] = {
-			...board[randIdx],
-			value: createValidValue(board[randIdx].superPos)
-		}
-		board = updateSuperPositions(board)
-	} */
 	const solvedBoard = solveSudoku(board)
 	if (solvedBoard) {
 		const squaresToReset: number[] = [...shuffleArray(boardIds)].slice(0, numOfZeros)

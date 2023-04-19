@@ -64,7 +64,7 @@ module.exports = {
       
     },
   },
-  plugins: [require("tailwindcss-animation-delay")],
+  plugins: [],
 }
 
 /* function componentsPlugin(){

@@ -1,3 +1,6 @@
+//const { default: plugin } = require('tailwindcss');
+const plugin = require("tailwindcss/plugin")
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -27,23 +30,47 @@ module.exports = {
         }
       },
       animation:{
-      "go-back":"back 0.2s linear"
+        intro: "intro 1.5s ease-in-out",
+        intro2: "intro2 1.5s ease-in"
       },
       keyframes:{
-        "back":{
-          "0%": {
-            fontSize:"40px"
+        intro:{
+          "0%":{
+            fontSize: "0px",
+            padding: "0px 0px 200px 0px",
+            opacity: 0
           },
-          "50%": {
-            fontSize:"40px"
+          "100%":{
+            fontSize: "30px",
+            padding: "0px 0px 0px 0px",
+            opacity: 1
+          }
+        },
+
+        intro2:{
+          "0%":{
+            minWidth: "0px",
+            width: "0px",
+            fontSize: "0px",
+            opacity: 0
           },
-          "100%": {
-            fontSize:"40px"
-          },
-      }
+          "100%":{
+            minWidth: "80px",
+            fontSize: "5px",
+            opacity: 1
+          }
+        }
       }
       
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animation-delay")],
 }
+
+/* function componentsPlugin(){
+  return plugin(function ({addComponents, theme}) {
+    addComponents({
+      ".opts-button":{} 
+    })
+  })  
+} */

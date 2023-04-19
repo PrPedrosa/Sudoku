@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import downloadIcon from "../svg/download.svg"
 import SVG from "./SVG"
 
 const InstallPWA = () => {

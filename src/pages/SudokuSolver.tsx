@@ -3,7 +3,6 @@ import { createCompleteBoard } from "../scripts/createBoard"
 import { Board } from "./Board"
 import { updateSuperPositions } from "../scripts/updateSuperPositions"
 import { solveSudoku } from "../scripts/solveSudoku"
-import spinner from "../svg/spinner.svg"
 import { Board as BoardType } from "../types"
 import SVG from "../components/SVG"
 
